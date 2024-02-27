@@ -129,7 +129,33 @@ public class VSufragante extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
-			desbloquear();
+				int du = Integer.parseInt(txdusuf.getText());
+
+			    PreparedStatement statement = null;
+			    ResultSet resultSet = null;
+
+
+			  
+			    try {
+		    
+			    	Conect cn = new Conect();
+
+			        String sql = "SELECT * FROM `tpersona` WHERE du = ?";
+
+			        statement = cn.conexion().prepareStatement(sql);
+
+			        statement.setInt(1, du);
+
+			        resultSet = statement.executeQuery();
+			        
+					if(resultSet.next() == true) {			
+						JOptionPane.showMessageDialog(null, "Persona ya existente", "Error", JOptionPane.ERROR_MESSAGE);
+							bloquear();
+					}else {
+					desbloquear();	
+					}
+					
+			    }catch(SQLException e1){ }
 				
 			}
 		});

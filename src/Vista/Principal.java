@@ -63,7 +63,6 @@ public class Principal extends JFrame {
 			
 				VCandidato vent = new VCandidato();
 				nuevoPanel(vent);
-				
 			}
 		});
 		mnNewMenu.add(mntmNewMenuItem_1);

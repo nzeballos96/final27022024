@@ -35,7 +35,7 @@ public class VCandidato extends JPanel {
 	private static JTextField txdomcan;
 	private static JTextField txpartido;
 	private static JTextField txgencan;
-
+	Conect cn = new Conect();
 	/**
 	 * Create the panel.
 	 */
@@ -159,8 +159,34 @@ public class VCandidato extends JPanel {
 		bvalcan.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				desbloquear();
+				int du = Integer.parseInt(txducan.getText());
 
+			    PreparedStatement statement = null;
+			    ResultSet resultSet = null;
+
+
+			  
+			    try {
+		    
+			    	Conect cn = new Conect();
+
+			        String sql = "SELECT * FROM `tpersona` WHERE du = ?";
+
+			        statement = cn.conexion().prepareStatement(sql);
+
+			        statement.setInt(1, du);
+
+			        resultSet = statement.executeQuery();
+			        
+					if(resultSet.next() == true) {			
+						JOptionPane.showMessageDialog(null, "Persona ya existente", "Error", JOptionPane.ERROR_MESSAGE);
+							bloquear();
+					}else {
+					desbloquear();	
+					}
+					
+			    }catch(SQLException e1){ }
+				
 			}
 		});
 		bvalcan.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -292,18 +318,9 @@ public class VCandidato extends JPanel {
 			valido = false;
 			mensajesError[4] = "El genero no puede estar vacío";
 		}
-
-		// Mostrar mensajes de error
-		if (!valido) {
-			for (String mensaje : mensajesError) {
-				if (mensaje != null) {
-					JOptionPane.showMessageDialog(null, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
-				}
-			}
-		}
-
 		return valido;
-	}
+}
+		
 
 	public static Void cargarcandidato(int id_elec) {
 
@@ -359,5 +376,6 @@ public class VCandidato extends JPanel {
 
 		return null;
 	}
-	
 }
+	
+
