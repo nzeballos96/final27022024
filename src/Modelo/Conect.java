@@ -24,7 +24,7 @@ public class Conect {
         try {
             Class.forName(driver);
             conect = DriverManager.getConnection(url + base, usuario, contraseña);
-            JOptionPane.showMessageDialog(null,"OK");
+          //  JOptionPane.showMessageDialog(null,"OK");
            // System.out.println("CONECTADO");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, " ERROR AL INTENTAR LA CONEXION: " + e);
