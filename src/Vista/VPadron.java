@@ -42,14 +42,13 @@ public class VPadron extends JPanel {
 		tpadron.setBounds(53, 111, 1169, 603);
 		add(tpadron);
 		
-	//	llenarPadron();
 		cargapadron();
 		
 	}
 
         
    public void llenarPadron(int id_elec) {
-        String sqlmc = "SELECT p.DU, p.APELLIDO, p.NOMBRE, p.DOMICILIO, p.GENERO, p.EDAD, s.STATUS FROM tpersona AS p JOIN tsufragante AS s on p.DU = s.DU_PER WHERE s.ID_ELEC = ?";
+        String sqlmc = "SELECT p.DU, p.APELLIDO, p.NOMBRE, p.DOMICILIO, p.GENERO, p.EDAD, s.STATUS FROM tpersona AS p JOIN tsufragante AS s on p.DU = s.DU_PER WHERE s.ID_ELEC = ? ";
         Conect conexion = new Conect();
         try (
            
@@ -88,8 +87,6 @@ public class VPadron extends JPanel {
             
         }
         
-    
-    
     public void cargapadron() {
 
 			Connection connection = null;
