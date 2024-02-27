@@ -94,7 +94,7 @@ public class VVotar extends JPanel {
 			    
 				    	Conect cn = new Conect();
 
-				        String sql = "SELECT DU FROM tpersona JOIN tsufragante on tpersona.DU = tsufragante.DU_PER JOIN teleccion ON teleccion.ID_ELEC= tsufragante.ID_ELEC WHERE tpersona.DU = ? AND teleccion.ID_ELEC = ?";
+				        String sql = "SELECT DU FROM tpersona JOIN tsufragante on tpersona.DU = tsufragante.DU_PER JOIN teleccion ON teleccion.ID_ELEC= tsufragante.ID_ELEC WHERE tpersona.DU = ? AND teleccion.ID_ELEC = ? and tsufragante.status = 0";
 
 				        statement1 = cn.conexion().prepareStatement(sql);
 
@@ -104,9 +104,14 @@ public class VVotar extends JPanel {
 				        resultSet1 = statement1.executeQuery();
 				        
 						if(resultSet.next() == true) {			
-							JOptionPane.showMessageDialog(null, "Persona no existente", "Error", JOptionPane.ERROR_MESSAGE);
-						}else {
+							
+							
 							JOptionPane.showMessageDialog(null, "votante encontrado", "Alert", JOptionPane.WARNING_MESSAGE);
+							cargalista();
+						
+						}else {
+							JOptionPane.showMessageDialog(null, "Persona esta habilitada para votar", "Error", JOptionPane.ERROR_MESSAGE);
+
 						}
 						
 				    }catch(SQLException e1){ }
@@ -120,6 +125,10 @@ public class VVotar extends JPanel {
 		add(bvalidarsuf);
 		
 		tlista = new JTable();
+		tlista.setRowSelectionAllowed(false);
+		tlista.setShowVerticalLines(false);
+		tlista.setShowHorizontalLines(false);
+		tlista.setShowGrid(false);
 		tlista.setBounds(75, 183, 1120, 281);
 		add(tlista);
 		
@@ -157,6 +166,21 @@ public class VVotar extends JPanel {
 		add(lblNewLabel_1_3);
 		
 		JButton bvotarrcan = new JButton("CONFIRMAR VOTO");
+		bvotarrcan.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				int du = Integer.parseInt(idcan.getText()); 
+				int dus = Integer.parseInt(idsuf.getText()); 
+				
+				if(validarCampos()==true) {
+					
+					Votar(du, dus);			
+			///		statusVotar(dus);
+					
+				}
+			
+			}
+		});
 		bvotarrcan.setFont(new Font("Tahoma", Font.PLAIN, 21));
 		bvotarrcan.setBounds(187, 591, 945, 36);
 		add(bvotarrcan);
@@ -175,7 +199,8 @@ public class VVotar extends JPanel {
 		bnulo.setBounds(908, 669, 269, 36);
 		add(bnulo);
 		
-		cargalista();
+	//	cargalista();
+		cargaDobleClic(tlista, idcan, apecan, pcand);
 		
 	}
 	
@@ -261,5 +286,101 @@ public class VVotar extends JPanel {
 				}
 
 			}
+	    
+	    public void Votar(int du, int dus) {
+	    	Connection connection = null;
+			Statement statement = null;
+			ResultSet resultSet = null;
+			int id_elec = 0;
 
+			try {
+
+				PreparedStatement statementrc = null;
+				String id_elecc = "SELECT MAX(ID_ELEC) FROM teleccion WHERE STATUS = 0;";
+
+				statementrc = cn.conexion().prepareStatement(id_elecc);
+				resultSet = statementrc.executeQuery(id_elecc);
+
+				if (resultSet.next()) {
+
+					id_elec = resultSet.getInt(1);
+
+				} else {
+					System.out.println("No se encontraron elecciones con STATUS = 0.");
+				}
+			} catch (SQLException e1) {
+
+			}
+	    	try {
+	
+	    	 du = Integer.parseInt(idcan.getText());
+	    	
+	    	PreparedStatement statementrc1 = null;
+
+			String sqlinsu = "UPDATE tcandidato SET cvoto = cvoto + 1 WHERE DU_PER = ? and id_elec = ?";
+			statementrc1 = cn.conexion().prepareStatement(sqlinsu);
+
+			statementrc1.setInt(1, du);
+			statementrc1.setInt(2, id_elec);
+
+			int vot = statementrc1.executeUpdate();
+			
+	    	 dus = Integer.parseInt(idsuf.getText());
+	    	
+	    	PreparedStatement statementrc = null;
+
+			String sqlins = "UPDATE tsufragante SET status = status + 1 WHERE DU_PER = ? and id_elec = ?";
+			statementrc = cn.conexion().prepareStatement(sqlins);
+
+			statementrc.setInt(1, dus);
+			statementrc.setInt(2, id_elec);
+
+			int sta = statementrc.executeUpdate();
+
+	        if (sta == 1) {
+
+	            JOptionPane.showMessageDialog(null, "sufragante registrado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            throw new SQLException("ERROR " + sta);
+	        }
+
+
+			
+			
+
+	        if (vot == 1) {
+	            // Display user-friendly success message
+	            JOptionPane.showMessageDialog(null, "Voto registrado exitosamente!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+	        } else {
+	            throw new SQLException("ERROR " + vot);
+	        }
+
+		} catch (SQLException e) {
+			// System.err.println("Error al insertar sufragante: " + e.getMessage());
+		}
+	    	
+	    }
+	    
+	    public void cargaDobleClic(JTable tlista, JTextField idcan, JTextField apecan, JTextField pcand) {
+
+	        tlista.addMouseListener(new MouseAdapter() {
+	            @Override
+	            public void mousePressed(MouseEvent e) {
+	                if (e.getClickCount() == 2) {
+	                    int row = tlista.getSelectedRow();
+	                    if (row >= 0) {
+	                        String du = (String) tlista.getValueAt(row, 0); //  fila seleccionada
+	                        idcan.setText(du); // DU al JTextField
+	                        String apellido = (String) tlista.getValueAt(row, 1); //  fila seleccionada
+	                        apecan.setText(apellido); // DU al JTextField
+	                        String partido = (String) tlista.getValueAt(row, 3); //  fila seleccionada
+	                        pcand.setText(partido); // DU al JTextField
+	                    }
+	                }
+	            }
+	        });
+	    }
+	    
+ 
+	
 }
