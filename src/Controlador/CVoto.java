@@ -2,6 +2,7 @@ package Controlador;
 
 import Modelo.Voto;
 
+
 public class CVoto extends Voto {
 	
 	static int votoblanco = 0;
@@ -9,6 +10,7 @@ public class CVoto extends Voto {
 	static int votosTotales = 0;
 	static int votosrealizados = 0;
 	static int asistencias = 0;
+	static int margendeerror = 0;
 	
 	public static void votoenblanco() {
 		
@@ -43,18 +45,15 @@ public class CVoto extends Voto {
 	
 	public static void validarvotacion() {
 
-		votosrealizados = votosTotales	+	votoblanco	+votonulo;
+		votosrealizados = votosTotales	+	votoblanco	+ votonulo;
 		
 		System.out.println("VOTOS REALIZADOS CANTIDAD: " + votosrealizados );
 		
 		System.out.println("ASISTENCIA DE VOTANTES: " + asistencias );
 
-		int margendeerror = 0;
-		
 		margendeerror = votosrealizados   -  asistencias;
 	
 		System.out.println("MARGEN DE ERROR EN VOTOS: " + margendeerror );
 	
 	}
 }
-

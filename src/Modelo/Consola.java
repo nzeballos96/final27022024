@@ -30,15 +30,11 @@ public class Consola {
 		
 		System.out.println("5. --> CANDIDATOS");
 		
-		System.out.println("6. --> ESCRUTINIO PROVISORIO");
+		System.out.println("6. --> GENERAR ESCRUTINIO");
+				
+		System.out.println("7. --> VALIDACION DE VOTOS");
 		
-		System.out.println("7. --> ESCRUTINIO DEFINITIVO");
-		
-		System.out.println("8. --> VALIDACION DE VOTOS");
-		
-		System.out.println("9. --< Acerca de >--");
-		
-		System.out.println("0. --> Salir <--");
+		System.out.println("8. --< Acerca de >--");
 
 		int opcion = sc.nextInt();
 
@@ -327,35 +323,37 @@ public class Consola {
 			break;
 		case 5:
 
+			CCandidato.mostrarcandidatos();
+			
 			Menu();
 			
 			break;
 		case 6:
 
-			CCandidato.mostrarvotoscandidatos();
+			System.out.println("------------------------------------------------");
+			System.out.println("------------------------------------------------");
+			System.out.println("------------------------------------------------");
+			System.out.println("------------------------------------------------");
+			System.out.println("------------------------------------------------");
 			
-			CVoto.muestravotosenblanco();
-			
+			CCandidato.mostrarvotoscandidatos();		
+			CVoto.muestravotosenblanco();		
 			CVoto.muestravotosennulo();
+			CCandidato.mostrarVotosdePartidos();
 			
-			CCandidato.mostrarVotosPartidos();
-
-			CCandidato.mostrarVotosCandidatos();
+			CSufragante.sumarVotosrealizados();
+			CCandidato.sumarVotosTotales();
+			CVoto.sumarVotosrealizadosvoto();
+			CVoto.sumarVotosTotalesvoto();
+			CVoto.validarvotacion();
+			
+			System.exit(0);
 			
 			Menu();
 
 			break;
 
 		case 7:
-			
-			CCandidato.obtenercandidatosGanadores();
-			CCandidato.obtenercandidatosGanadores();
-
-			Menu();
-
-			break;
-
-		case 8:
 
 			CSufragante.sumarVotosrealizados();
 			CCandidato.sumarVotosTotales();
@@ -367,7 +365,7 @@ public class Consola {
 
 			break;
 			
-		case 9:
+		case 8:
 
 			System.out.println( "ZEBALLOS NICOLAS, 27/02/2024");
 			
@@ -376,16 +374,12 @@ public class Consola {
 			break;
 			
 		case 99999:
-			// CARGAS PARA PRUEBA
-			CCandidato.cargarcandidato(12345678, "Juan", "Pérez", egenero.masculino, 30, "Calle 123", epartido.FRENTE_DE_TODOS, "Por un futuro mejor", 0);
-			CCandidato.cargarcandidato(87654321, "María", "González", egenero.femenino, 25, "Calle 456", epartido.PODEMOS, "Un cambio para el bien", 0);
+			// CARGAS PARA PRUEBA 
 			CCandidato.cargarcandidato(98765432, "Pedro", "Gómez", egenero.masculino, 40, "Calle 789", epartido.FRENTE_DE_TODOS, "Un nuevo camino", 0);
 			CCandidato.cargarcandidato(10987654, "Ana", "Fernández", egenero.femenino, 35, "Calle 1011", epartido.FRENTE_DE_TODOS, "Por la unidad", 0);
-			CCandidato.cargarcandidato(11121314, "Luis", "Martínez", egenero.masculino, 20, "Calle 1213", epartido.REVOLUCIÓN_CIVIL, "Un futuro con esperanza", 0);
 			CCandidato.cargarcandidato(12131415, "Sofía", "López", egenero.femenino, 22, "Calle 1415", epartido.PODEMOS, "Hacia un futuro mejor", 0);
 			CCandidato.cargarcandidato(13141516, "Diego", "Rodríguez", egenero.masculino, 50, "Calle 1617", epartido.LIBRES_DEL_SUR, "Por la justicia social", 0);
 			CCandidato.cargarcandidato(14151617, "Camila", "Sánchez", egenero.femenino, 45, "Calle 1819", epartido.JUNTOS_POR_EL_CAMBIO, "Un cambio con progreso", 0);
-			CCandidato.cargarcandidato(15161718, "Martín", "Díaz", egenero.masculino, 30, "Calle 2021", epartido.PODEMOS, "Un futuro para todos", 0);
 			CCandidato.cargarcandidato(16171819, "Laura", "Pérez", egenero.femenino, 25, "Calle 2223", epartido.REVOLUCIÓN_CIVIL, "Por la igualdad", 0);
 			
 			
@@ -400,14 +394,17 @@ public class Consola {
 			CSufragante.cargarsufragante(10000008, "Martín", "Díaz", egenero.masculino, 30, "Calle 2021", 0);
 			CSufragante.cargarsufragante(10000009, "Laura", "Pérez", egenero.femenino, 25, "Calle 2223", 0);
 			
+			CCandidato.sumarvoto(98765432);
+			CCandidato.sumarvoto(98765432);
+			CCandidato.sumarvoto(98765432);
+			CCandidato.sumarvoto(16171819);
+			CCandidato.sumarvoto(98765432);
+			CCandidato.sumarvoto(16171819);
+			CCandidato.sumarvoto(16171819);
+			CCandidato.sumarvoto(14151617);
+			
 			Menu();
 			break;
-
-		case 0:
-			
-			System.out.println("Gracias por usar el menú");
-			
-			System.exit(0);
 		
 		default:
 			
